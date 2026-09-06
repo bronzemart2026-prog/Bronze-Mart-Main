@@ -21,7 +21,7 @@ export default function CartDrawer() {
   const subtotal = getSubtotal();
   const shipping = getShippingFee();
   const total = subtotal + shipping;
-  const freeShippingThreshold = 1500;
+  const freeShippingThreshold = 1000;
   const amountToFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
   const freeShippingProgress = Math.min(100, (subtotal / freeShippingThreshold) * 100);
 
@@ -35,7 +35,7 @@ export default function CartDrawer() {
         onClick={closeCart}
       />
 
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div className="fixed inset-y-0 right-0 flex max-w-full pl-0 sm:pl-10">
         <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col border-l border-stone-200">
           {/* Header */}
           <div className="p-5 border-b border-stone-200 flex items-center justify-between">

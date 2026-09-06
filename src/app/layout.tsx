@@ -52,7 +52,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="bn" className={`h-full antialiased scroll-smooth ${hindSiliguri.variable} ${hindSiliguri.className}`}>
+    <html
+      lang="bn"
+      data-scroll-behavior="smooth"
+      className={`h-full antialiased scroll-smooth ${hindSiliguri.variable} ${hindSiliguri.className}`}
+    >
       <body className="min-h-full flex flex-col bg-white text-stone-900">
         <StoreLayoutShell>{children}</StoreLayoutShell>
       </body>

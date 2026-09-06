@@ -92,7 +92,7 @@ export const useCartStore = create<CartState>()(
       getShippingFee: () => {
         const subtotal = get().getSubtotal();
         if (subtotal === 0) return 0;
-        return subtotal >= 150 ? 0 : 15; // Free shipping over $150
+        return subtotal >= 1000 ? 0 : 60; // ১০০০ টাকার অধিক অর্ডারে ফ্রি ডেলিভারি
       },
     }),
     {

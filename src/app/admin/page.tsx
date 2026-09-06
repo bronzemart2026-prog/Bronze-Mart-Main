@@ -13,6 +13,8 @@ import {
   RefreshCw,
   ExternalLink,
   Users,
+  LayoutDashboard,
+  Trash2,
 } from 'lucide-react';
 import { getOrders, updateOrderStatus, deleteOrder } from '@/lib/api';
 

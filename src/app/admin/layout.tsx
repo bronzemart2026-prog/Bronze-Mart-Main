@@ -101,33 +101,55 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-[#f8f6f0] flex flex-col md:flex-row">
       {/* Mobile Header */}
-      <div className="md:hidden bg-stone-900 text-white p-4 flex items-center justify-between border-b border-stone-800">
-        <Logo size="sm" variant="dark" />
+      <div className="md:hidden sticky top-0 z-40 bg-stone-900 text-white px-4 py-3 flex items-center justify-between border-b border-stone-800 shadow-md">
+        <div className="flex items-center gap-2">
+          <Logo size="sm" variant="dark" />
+          <span className="text-[10px] bg-[#8d4c2d] text-white px-2 py-0.5 rounded-full font-bold">
+            ADMIN
+          </span>
+        </div>
         <button
           onClick={() => setMobileNavOpen(!mobileNavOpen)}
-          className="p-2 rounded-lg bg-stone-800 text-white"
+          className="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-white transition-colors"
+          aria-label="Toggle Menu"
         >
           {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
+      {/* Mobile Drawer Overlay Backdrop */}
+      {mobileNavOpen && (
+        <div
+          onClick={() => setMobileNavOpen(false)}
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden"
+        />
+      )}
+
       {/* Sidebar Navigation */}
       <aside
-        className={`w-full md:w-64 bg-stone-900 text-stone-200 border-r border-stone-800 flex flex-col justify-between p-5 flex-shrink-0 ${
-          mobileNavOpen ? 'block' : 'hidden md:flex'
+        className={`fixed md:static inset-y-0 left-0 z-50 w-72 md:w-64 bg-stone-900 text-stone-200 border-r border-stone-800 flex flex-col justify-between p-5 flex-shrink-0 transition-transform duration-300 ease-in-out md:translate-x-0 ${
+          mobileNavOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div className="space-y-6">
-          <div className="hidden md:block pb-4 border-b border-stone-800">
-            <Logo size="md" variant="dark" />
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#ce9764] font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>অ্যাডমিন কন্ট্রোল প্যানেল</span>
+          <div className="flex items-center justify-between pb-4 border-b border-stone-800">
+            <div>
+              <Logo size="md" variant="dark" />
+              <div className="mt-1 flex items-center gap-1.5 text-[11px] text-[#ce9764] font-semibold">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>অ্যাডমিন কন্ট্রোল প্যানেল</span>
+              </div>
             </div>
+            <button
+              onClick={() => setMobileNavOpen(false)}
+              className="md:hidden p-1.5 text-stone-400 hover:text-white rounded-lg"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          <div className="space-y-1">
-            <div className="text-[10px] uppercase font-bold text-stone-500 px-3 pb-2">
+          <div className="space-y-1.5">
+            <div className="text-[10px] uppercase font-bold text-stone-500 px-3 pb-1">
               নেভিগেশন মেনু
             </div>
             {navItems.map((item) => (
@@ -136,7 +158,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={item.href}
                 target={item.target}
                 onClick={() => setMobileNavOpen(false)}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
+                className={`flex items-center gap-3 px-3.5 py-3 md:py-2.5 rounded-xl text-xs font-semibold transition-colors ${
                   item.active
                     ? 'bg-[#8d4c2d] text-white shadow-xs'
                     : 'text-stone-400 hover:text-white hover:bg-stone-800'
@@ -164,7 +186,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-stone-800 hover:bg-red-950/40 hover:text-red-400 text-stone-400 text-xs font-semibold rounded-xl transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-stone-800 hover:bg-red-950/40 hover:text-red-400 text-stone-400 text-xs font-semibold rounded-xl transition-colors"
           >
             <LogOut className="w-4 h-4" />
             <span>লগআউট</span>
@@ -173,7 +195,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Admin Content */}
-      <main className="flex-1 min-w-0 overflow-y-auto p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 min-w-0 overflow-y-auto p-3.5 sm:p-6 lg:p-8">
         {children}
       </main>
     </div>
