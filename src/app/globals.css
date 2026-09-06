@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-hind-siliguri), "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+  --font-serif: var(--font-hind-siliguri), "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+}
+
+:root {
+  --font-bengali: var(--font-hind-siliguri), 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+  --background: #fdfbf7;
+  --foreground: #1a1512;
+  --bronze-50: #fbf7f0;
+  --bronze-100: #f5eedf;
+  --bronze-200: #ebd8bd;
+  --bronze-300: #deb992;
+  --bronze-400: #ce9764;
+  --bronze-500: #be7b41;
+  --bronze-600: #aa6335;
+  --bronze-700: #8d4c2d;
+  --bronze-800: #743e2a;
+  --bronze-900: #603426;
+  --bronze-950: #361a12;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-bengali);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Custom Bronze Glow & Gradients */
+.bronze-gradient {
+  background: linear-gradient(135deg, #ce9764 0%, #8d4c2d 50%, #603426 100%);
+}
+
+.bronze-gradient-light {
+  background: linear-gradient(135deg, #fbf7f0 0%, #ebd8bd 100%);
+}
+
+.bronze-gradient-dark {
+  background: linear-gradient(135deg, #241611 0%, #160d09 100%);
+}
+
+.bronze-text-gradient {
+  background: linear-gradient(135deg, #d49a5b 0%, #be7b41 50%, #8d4c2d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bronze-border-glow {
+  box-shadow: 0 0 20px -5px rgba(206, 151, 100, 0.35);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5eedf;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ce9764;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aa6335;
+}
