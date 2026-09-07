@@ -1,12 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Hind_Siliguri } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import CartDrawer from '@/components/cart/CartDrawer';
-import WhatsAppWidget from '@/components/common/WhatsAppWidget';
-
 import StoreLayoutShell from '@/components/layout/StoreLayoutShell';
+import JsonLd from '@/components/common/JsonLd';
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_NAME_BN,
+  SITE_DESCRIPTION,
+  SEO_KEYWORDS,
+  getOrganizationSchema,
+  getWebSiteSchema,
+} from '@/lib/seo';
 
 const hindSiliguri = Hind_Siliguri({
   weight: ['300', '400', '500', '600', '700'],
@@ -15,35 +20,77 @@ const hindSiliguri = Hind_Siliguri({
   display: 'swap',
 });
 
+export const viewport: Viewport = {
+  themeColor: '#8d4c2d',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Bronze Mart',
-    template: '%s | Bronze Mart',
+    default: `${SITE_NAME} | সেরা মানের ফ্যাশন, স্কিনকেয়ার ও লাইফস্টাইল পণ্য`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    'ব্রোঞ্জ মার্টে সেরা মানের পোশাক, প্রসাধন ও স্কিনকেয়ার, জুতো, ব্যাগ এবং লাইফস্টাইল সামগ্রী সাশ্রয়ী মূল্যে কিনুন। দ্রুত ক্যাশ অন ডেলিভারি ও সহজ রিটার্ন সুবিধা।',
+  description: SITE_DESCRIPTION,
+  keywords: SEO_KEYWORDS,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+  },
   icons: {
-    icon: '/logo-mark.png',
+    icon: [
+      { url: '/logo-mark.png', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
     shortcut: '/logo-mark.png',
-    apple: '/logo-mark.png',
+    apple: [{ url: '/logo-mark.png', sizes: '180x180', type: 'image/png' }],
   },
-  keywords: [
-    'Bronze Mart',
-    'ব্রোঞ্জ মার্ট',
-    'অনলাইন শপিং',
-    'ছেলেদের পোশাক',
-    'মেয়েদের পোশাক',
-    'কসমেটিকস',
-    'স্কিনকেয়ার',
-    'জুতো ও ব্যাগ',
-    'অনলাইন শপ বাংলাদেশ',
-  ],
   openGraph: {
-    title: 'Bronze Mart',
-    description: 'উচ্চমানের পোশাক, খাঁটি প্রসাধন ও নিত্যপ্রয়োজনীয় সামগ্রী।',
     type: 'website',
-    images: ['/logo-mark.png'],
+    locale: 'bn_BD',
+    alternateLocale: ['en_US'],
+    url: SITE_URL,
+    siteName: `${SITE_NAME} - ${SITE_NAME_BN}`,
+    title: `${SITE_NAME} | সেরা মানের ফ্যাশন, স্কিনকেয়ার ও লাইফস্টাইল পণ্য`,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} - ${SITE_NAME_BN}`,
+      },
+    ],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${SITE_NAME} | অনলাইন শপিং বাংলাদেশ`,
+    description: SITE_DESCRIPTION,
+    images: ['/logo.png'],
+    creator: '@BronzeMart',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  category: 'ecommerce',
 };
 
 export default function RootLayout({
@@ -51,15 +98,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const organizationSchema = getOrganizationSchema();
+  const webSiteSchema = getWebSiteSchema();
+
   return (
     <html
       lang="bn"
       data-scroll-behavior="smooth"
       className={`h-full antialiased scroll-smooth ${hindSiliguri.variable} ${hindSiliguri.className}`}
     >
+      <head>
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={webSiteSchema} />
+      </head>
       <body className="min-h-full flex flex-col bg-white text-stone-900">
         <StoreLayoutShell>{children}</StoreLayoutShell>
       </body>
     </html>
   );
 }
+

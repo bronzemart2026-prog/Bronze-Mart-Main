@@ -1,10 +1,40 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, Heart, Truck } from 'lucide-react';
+import JsonLd from '@/components/common/JsonLd';
+import { SITE_NAME, SITE_NAME_BN, SITE_URL } from '@/lib/seo';
+
+export const metadata: Metadata = {
+  title: `আমাদের সম্পর্কে | ${SITE_NAME}`,
+  description:
+    'ব্রোঞ্জ মার্টের মূল লক্ষ্য হলো বাংলাদেশের প্রতিটি ঘরে আধুনিক ও রুচিশীল পোশাক, আসল কসমেটিকস ও স্কিনকেয়ার সামগ্রী সাশ্রয়ী মূল্যে পৌঁছে দেওয়া।',
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    title: `আমাদের সম্পর্কে - ${SITE_NAME} | ${SITE_NAME_BN}`,
+    description:
+      'ব্রোঞ্জ মার্টের গল্প, কোয়ালিটি, সেবা এবং ১০০% আসল পণ্যের প্রতিশ্রুতি সম্পর্কে বিস্তারিত জানুন।',
+    url: '/about',
+    type: 'website',
+  },
+};
 
 export default function AboutPage() {
+  const aboutSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    '@id': `${SITE_URL}/about#aboutpage`,
+    name: `আমাদের সম্পর্কে - ${SITE_NAME}`,
+    description:
+      'ব্রোঞ্জ মার্টের মূল লক্ষ্য হলো বাংলাদেশের প্রতিটি ঘরে আধুনিক ও রুচিশীল পোশাক, আসল কসমেটিকস ও স্কিনকেয়ার সামগ্রী সাশ্রয়ী মূল্যে পৌঁছে দেওয়া।',
+    url: `${SITE_URL}/about`,
+  };
+
   return (
     <div className="bg-white min-h-screen py-16">
+      <JsonLd data={aboutSchema} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Intro */}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
@@ -74,3 +104,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

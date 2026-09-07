@@ -1,7 +1,16 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import { getCategories, getProducts } from '@/lib/api';
 import ProductCard from '@/components/products/ProductCard';
+import JsonLd from '@/components/common/JsonLd';
 import Link from 'next/link';
+import {
+  SITE_NAME,
+  SITE_NAME_BN,
+  getBreadcrumbSchema,
+  getItemListSchema,
+  getCanonicalUrl,
+} from '@/lib/seo';
 
 interface ProductsPageProps {
   searchParams: Promise<{
@@ -9,6 +18,68 @@ interface ProductsPageProps {
     search?: string;
     sort?: 'price_asc' | 'price_desc' | 'rating' | 'newest';
   }>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: ProductsPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const categories = await getCategories();
+  const selectedCategory = categories.find((c) => c.slug === params.category);
+
+  if (params.search) {
+    return {
+      title: `"${params.search}" এর অনুসন্ধান ফলাফল | ${SITE_NAME}`,
+      description: `ব্রোঞ্জ মার্টে "${params.search}" সম্পর্কিত সেরা পণ্য কালেকশন দেখুন।`,
+      robots: {
+        index: false,
+        follow: true,
+      },
+    };
+  }
+
+  if (selectedCategory) {
+    const title = `${selectedCategory.name} কালেকশন | ${SITE_NAME}`;
+    const description =
+      selectedCategory.description ||
+      `ব্রোঞ্জ মার্টে সেরা মানের ${selectedCategory.name} সাশ্রয়ী মূল্যে কিনুন। দ্রুত ক্যাশ অন ডেলিভারি সুবিধা।`;
+    const canonical = `/products?category=${selectedCategory.slug}`;
+
+    return {
+      title,
+      description,
+      alternates: {
+        canonical,
+      },
+      openGraph: {
+        title: `${selectedCategory.name} - ${SITE_NAME_BN}`,
+        description,
+        url: canonical,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${selectedCategory.name} | ${SITE_NAME}`,
+        description,
+      },
+    };
+  }
+
+  return {
+    title: `সকল পণ্য কালেকশন | ${SITE_NAME}`,
+    description:
+      'ব্রোঞ্জ মার্টের আধুনিক পোশাক, প্রসাধন, স্কিনকেয়ার ও লাইফস্টাইল সামগ্রীর সম্পূর্ণ কালেকশন দেখুন। সেরা অফার ও দ্রুত হোম ডেলিভারি।',
+    alternates: {
+      canonical: '/products',
+    },
+    openGraph: {
+      title: `সকল পণ্য কালেকশন - ${SITE_NAME_BN}`,
+      description:
+        'ব্রোঞ্জ মার্টের পোশাক, প্রসাধন, স্কিনকেয়ার ও লাইফস্টাইল সামগ্রীর সম্পূর্ণ কালেকশন।',
+      url: '/products',
+      type: 'website',
+    },
+  };
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
@@ -24,8 +95,45 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     sort: params.sort,
   });
 
+  // Structured Data
+  const breadcrumbItems = [
+    { name: 'হোম', item: '/' },
+    { name: 'পণ্যসমূহ', item: '/products' },
+  ];
+  if (selectedCategory) {
+    breadcrumbItems.push({
+      name: selectedCategory.name,
+      item: `/products?category=${selectedCategory.slug}`,
+    });
+  }
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
+
+  const listTitle = selectedCategory
+    ? `${selectedCategory.name} কালেকশন - ${SITE_NAME}`
+    : `সকল পণ্য কালেকশন - ${SITE_NAME}`;
+  const listDescription =
+    selectedCategory?.description ||
+    'ব্রোঞ্জ মার্টের আধুনিক ফ্যাশন, স্কিনকেয়ার ও লাইফস্টাইল সামগ্রী।';
+
+  const itemListSchema =
+    products.length > 0
+      ? getItemListSchema(
+          listTitle,
+          listDescription,
+          products.map((p) => ({
+            title: p.title,
+            slug: p.slug,
+            price: p.price,
+            image: p.images?.[0],
+          }))
+        )
+      : null;
+
   return (
     <div className="bg-white min-h-screen py-10">
+      <JsonLd data={breadcrumbSchema} />
+      {itemListSchema && <JsonLd data={itemListSchema} />}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb & Header */}
         <div className="mb-8">
@@ -113,3 +221,4 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     </div>
   );
 }
+
