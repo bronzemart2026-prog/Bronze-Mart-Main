@@ -1,5 +1,5 @@
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://bronzemart.com';
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://bronze-mart.com';
 
 export const SITE_NAME = 'Bronze Mart';
 export const SITE_NAME_BN = 'ব্রোঞ্জ মার্ট';

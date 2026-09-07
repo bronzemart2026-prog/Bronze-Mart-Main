@@ -66,18 +66,20 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: '/logo.png',
+        url: `${SITE_URL}/logo.png`,
+        secureUrl: `${SITE_URL}/logo.png`,
         width: 1200,
         height: 630,
+        type: 'image/png',
         alt: `${SITE_NAME} - ${SITE_NAME_BN}`,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${SITE_NAME} | অনলাইন শপিং বাংলাদেশ`,
+    title: `${SITE_NAME} | সেরা মানের ফ্যাশন, স্কিনকেয়ার ও লাইফস্টাইল পণ্য`,
     description: SITE_DESCRIPTION,
-    images: ['/logo.png'],
+    images: [`${SITE_URL}/logo.png`],
     creator: '@BronzeMart',
   },
   robots: {
@@ -118,6 +120,14 @@ export default function RootLayout({
       className={`h-full antialiased scroll-smooth ${hindSiliguri.variable} ${hindSiliguri.className}`}
     >
       <head>
+        <meta property="og:image" content={`${SITE_URL}/logo.png`} />
+        <meta property="og:image:secure_url" content={`${SITE_URL}/logo.png`} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Bronze Mart - ব্রোঞ্জ মার্ট" />
+        <meta name="twitter:image" content={`${SITE_URL}/logo.png`} />
+        <link rel="image_src" href={`${SITE_URL}/logo.png`} />
         <JsonLd data={organizationSchema} />
         <JsonLd data={webSiteSchema} />
         <JsonLd data={faqSchema} />

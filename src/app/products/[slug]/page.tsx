@@ -6,6 +6,7 @@ import ProductDetailsClient from './ProductDetailsClient';
 import ProductCard from '@/components/products/ProductCard';
 import JsonLd from '@/components/common/JsonLd';
 import {
+  SITE_URL,
   SITE_NAME,
   SITE_NAME_BN,
   DEFAULT_OG_IMAGE,
@@ -39,8 +40,12 @@ export async function generateMetadata({
   const canonical = `/products/${product.slug}`;
   const imageUrls =
     product.images && product.images.length > 0
-      ? product.images
-      : [DEFAULT_OG_IMAGE];
+      ? product.images.map((img) =>
+          img.startsWith('http')
+            ? img
+            : `${SITE_URL}${img.startsWith('/') ? '' : '/'}${img}`
+        )
+      : [`${SITE_URL}/logo.png`];
 
   const keywords = [
     product.title,

@@ -63,6 +63,7 @@ export default function PostGeneratorModal({
   // Generate Post Text based on active template (natural human tone, no AI vibes)
   const generatePostContent = (): string => {
     const lines: string[] = [];
+    const productFormattedLink = `[${SITE_NAME} | সেরা মানের ফ্যাশন, স্কিনকেয়ার ও লাইফস্টাইল পণ্য](${productUrl})`;
 
     if (template === 'hot_offer') {
       lines.push(`${customDiscountText || 'বিশেষ অফার!'}`);
@@ -89,7 +90,7 @@ export default function PostGeneratorModal({
 
       if (includeUrl) {
         lines.push(`👉 ওয়েবসাইটে সরাসরি অর্ডার করতে ক্লিক করুন:`);
-        lines.push(`${productUrl}\n`);
+        lines.push(`${productFormattedLink}\n`);
       }
 
       if (includeHotline) {
@@ -123,7 +124,7 @@ export default function PostGeneratorModal({
 
       if (includeUrl) {
         lines.push(`🌐 অনলাইনে অর্ডার করার লিঙ্ক:`);
-        lines.push(`${productUrl}\n`);
+        lines.push(`${productFormattedLink}\n`);
       }
 
       if (includeHotline) {
@@ -145,7 +146,7 @@ export default function PostGeneratorModal({
       lines.push(`✔️ বাঁশখালীতে ফ্রি ডেলিভারি সুবিধা\n`);
 
       if (includeUrl) {
-        lines.push(`🔗 অর্ডার লিঙ্ক: ${productUrl}\n`);
+        lines.push(`🔗 অর্ডার লিঙ্ক: ${productFormattedLink}\n`);
       }
 
       if (includeHotline) {
@@ -171,7 +172,7 @@ export default function PostGeneratorModal({
 
       if (includeUrl) {
         lines.push(`🛒 ওয়েবসাইটে সরাসরি অর্ডার করুন:`);
-        lines.push(`${productUrl}\n`);
+        lines.push(`${productFormattedLink}\n`);
       }
 
       if (includeHotline) {
