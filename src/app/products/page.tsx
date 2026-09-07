@@ -42,12 +42,19 @@ export async function generateMetadata({
     const title = `${selectedCategory.name} কালেকশন | ${SITE_NAME}`;
     const description =
       selectedCategory.description ||
-      `ব্রোঞ্জ মার্টে সেরা মানের ${selectedCategory.name} সাশ্রয়ী মূল্যে কিনুন। দ্রুত ক্যাশ অন ডেলিভারি সুবিধা।`;
+      `ব্রোঞ্জ মার্টে সেরা মানের ${selectedCategory.name} সাশ্রয়ী মূল্যে কিনুন। বাঁশখালীতে ফ্রি ডেলিভারি ও সারা দেশে দ্রুত ক্যাশ অন ডেলিভারি সুবিধা।`;
     const canonical = `/products?category=${selectedCategory.slug}`;
 
     return {
       title,
       description,
+      keywords: [
+        selectedCategory.name,
+        `${selectedCategory.name} বাংলাদেশ`,
+        'Bronze Mart',
+        'ব্রোঞ্জ মার্ট',
+        'অনলাইন শপিং',
+      ],
       alternates: {
         canonical,
       },
@@ -55,12 +62,17 @@ export async function generateMetadata({
         title: `${selectedCategory.name} - ${SITE_NAME_BN}`,
         description,
         url: canonical,
+        siteName: `${SITE_NAME} - ${SITE_NAME_BN}`,
+        locale: 'bn_BD',
+        alternateLocale: ['en_US'],
         type: 'website',
+        images: [{ url: '/logo.png', width: 1200, height: 630, alt: selectedCategory.name }],
       },
       twitter: {
         card: 'summary_large_image',
         title: `${selectedCategory.name} | ${SITE_NAME}`,
         description,
+        images: ['/logo.png'],
       },
     };
   }
@@ -68,7 +80,16 @@ export async function generateMetadata({
   return {
     title: `সকল পণ্য কালেকশন | ${SITE_NAME}`,
     description:
-      'ব্রোঞ্জ মার্টের আধুনিক পোশাক, প্রসাধন, স্কিনকেয়ার ও লাইফস্টাইল সামগ্রীর সম্পূর্ণ কালেকশন দেখুন। সেরা অফার ও দ্রুত হোম ডেলিভারি।',
+      'ব্রোঞ্জ মার্টের আধুনিক পোশাক, প্রসাধন, স্কিনকেয়ার ও লাইফস্টাইল সামগ্রীর সম্পূর্ণ কালেকশন দেখুন। সেরা অফার, বাঁশখালীতে ফ্রি ডেলিভারি ও সারা দেশে দ্রুত হোম ডেলিভারি।',
+    keywords: [
+      'সকল পণ্য',
+      'ফ্যাশন কালেকশন',
+      'প্রসাধন সামগ্রী',
+      'স্কিনকেয়ার বিডি',
+      'জুতো ও ব্যাগ',
+      'Bronze Mart',
+      'ব্রোঞ্জ মার্ট',
+    ],
     alternates: {
       canonical: '/products',
     },
@@ -77,7 +98,11 @@ export async function generateMetadata({
       description:
         'ব্রোঞ্জ মার্টের পোশাক, প্রসাধন, স্কিনকেয়ার ও লাইফস্টাইল সামগ্রীর সম্পূর্ণ কালেকশন।',
       url: '/products',
+      siteName: `${SITE_NAME} - ${SITE_NAME_BN}`,
+      locale: 'bn_BD',
+      alternateLocale: ['en_US'],
       type: 'website',
+      images: [{ url: '/logo.png', width: 1200, height: 630, alt: 'Bronze Mart All Products' }],
     },
   };
 }
@@ -134,7 +159,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <JsonLd data={breadcrumbSchema} />
       {itemListSchema && <JsonLd data={itemListSchema} />}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1500px] mx-auto px-3 sm:px-5 lg:px-6">
         {/* Breadcrumb & Header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 text-xs text-stone-500 mb-2">

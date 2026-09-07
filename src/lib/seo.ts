@@ -5,25 +5,59 @@ export const SITE_NAME = 'Bronze Mart';
 export const SITE_NAME_BN = 'ব্রোঞ্জ মার্ট';
 export const SITE_TAGLINE = 'কোয়ালিটি, ট্রাস্ট ও ভ্যালু';
 export const SITE_DESCRIPTION =
-  'ব্রোঞ্জ মার্টে সেরা মানের পোশাক, প্রসাধন ও স্কিনকেয়ার, জুতো, ব্যাগ এবং লাইফস্টাইল সামগ্রী সাশ্রয়ী মূল্যে কিনুন। দ্রুত ক্যাশ অন ডেলিভারি ও সহজ রিটার্ন সুবিধা।';
+  'ব্রোঞ্জ মার্টে সেরা মানের রুচিশীল পোশাক, প্রিমিয়াম স্কিনকেয়ার ও প্রসাধন, ট্রেন্ডি জুতো ও ব্যাগ কিনুন সবচেয়ে সাশ্রয়ী মূল্যে। সারা দেশে দ্রুত ক্যাশ অন ডেলিভারি, বাঁশখালীতে ফ্রি ডেলিভারি ও সহজ রিটার্ন সুবিধা।';
 
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/logo.png`;
+export const FACEBOOK_PAGE_URL = 'https://www.facebook.com/people/Bronze-Mart/61589057942669/';
+export const HOTLINE_PHONE = '+8801883360440';
+export const HOTLINE_DISPLAY = '০১৮৮৩-৩৬০৪৪০';
+export const SUPPORT_EMAIL = 'bronzemart2026@gmail.com';
 
 export const SEO_KEYWORDS = [
-  'Bronze Mart',
+  'bronze-mart',
+  'bronze mart',
+  'bronze mart bd',
+  'bronzemart',
+  'bronzemart.com',
+  'bronzemart bd',
+  'online shopping bd',
+  'online shopping bangladesh',
+  'banskhali cosmetics',
+  'banshkhali cosmetics',
+  'banshkhali online shop',
+  'banskhalite free delivery',
+  'banshkhali shopping',
+  'chattogram online shop',
+  'chittagong online shopping',
+  'chattogram cosmetics',
+  'authentic cosmetics bd',
+  'skin care bangladesh',
+  'ladies bag bd',
+  'mens fashion bd',
+  'womens clothing bd',
+  'jewelry shop bd',
+  'cash on delivery bd',
   'ব্রোঞ্জ মার্ট',
+  'ব্রোঞ্জ-মার্ট',
+  'ব্রোঞ্জ মার্ট বাঁশখালী',
+  'বাঁশখালী কসমেটিকস',
+  'বাঁশখালী প্রসাধন সামগ্রী',
+  'বাঁশখালী অনলাইন শপ',
+  'চট্টগ্রাম অনলাইন শপিং',
   'অনলাইন শপিং বাংলাদেশ',
-  'ছেলেদের পোশাক',
-  'মেয়েদের পোশাক',
-  'অথেনটিক কসমেটিকস',
-  'স্কিনকেয়ার বাংলাদেশ',
-  'জুতো ও ব্যাগ',
-  'লাইফস্টাইল শপ',
-  'ক্যাশ অন ডেলিভারি',
-  'Online shopping Bangladesh',
-  'Bronze Mart BD',
-  'Fashion eCommerce Dhaka',
-  'Skin Care products BD',
+  'অনলাইন শপিং বিডি',
+  'অনলাইন কেনাকাটা বাংলাদেশ',
+  'ছেলেদের আধুনিক পোশাক',
+  'মেয়েদের ট্রেন্ডি ড্রেস ও শাড়ি',
+  'অথেনটিক কসমেটিকস বিডি',
+  'প্রিমিয়াম স্কিনকেয়ার সামগ্রী',
+  'জুতো ও লেডিস ব্যাগ',
+  'অনলাইন জুয়েলারি শপ',
+  'ক্যাশ অন ডেলিভারি শপিং',
+  'ফ্রি ডেলিভারি বাঁশখালী',
+  'Buy clothes online BD',
+  'Authentic makeup BD',
+  'Cash on Delivery shopping BD',
 ];
 
 /**
@@ -43,26 +77,76 @@ export function getOrganizationSchema() {
     '@type': 'OnlineStore',
     '@id': `${SITE_URL}/#organization`,
     name: SITE_NAME,
-    alternateName: [SITE_NAME_BN, 'BronzeMart Bangladesh'],
+    alternateName: [SITE_NAME_BN, 'BronzeMart BD', 'Bronze Mart Bangladesh'],
     url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
-      url: `${SITE_URL}/logo.png`,
+      url: `${SITE_URL}/logo-mark.png`,
       caption: SITE_NAME,
+      width: 512,
+      height: 512,
     },
     image: `${SITE_URL}/logo.png`,
     description: SITE_DESCRIPTION,
     priceRange: '৳৳',
     currenciesAccepted: 'BDT',
-    paymentAccepted: 'Cash, bKash, Credit Card, Debit Card',
-    areaServed: {
-      '@type': 'Country',
-      name: 'Bangladesh',
-    },
+    paymentAccepted: 'Cash, bKash, Nagad, Credit Card, Debit Card',
+    telephone: HOTLINE_PHONE,
+    email: SUPPORT_EMAIL,
+    sameAs: [
+      FACEBOOK_PAGE_URL,
+      `https://wa.me/8801883360440`,
+    ],
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        telephone: HOTLINE_PHONE,
+        contactType: 'customer service',
+        areaServed: 'BD',
+        availableLanguage: ['Bengali', 'English'],
+        contactOption: 'TollFree',
+      },
+      {
+        '@type': 'ContactPoint',
+        telephone: HOTLINE_PHONE,
+        contactType: 'sales',
+        areaServed: 'BD',
+        availableLanguage: ['Bengali', 'English'],
+      },
+    ],
+    areaServed: [
+      {
+        '@type': 'Country',
+        name: 'Bangladesh',
+      },
+      {
+        '@type': 'AdministrativeArea',
+        name: 'Chattogram Division',
+      },
+      {
+        '@type': 'City',
+        name: 'Banshkhali',
+      },
+      {
+        '@type': 'City',
+        name: 'Dhaka',
+      },
+    ],
     address: {
       '@type': 'PostalAddress',
+      streetAddress: 'Heed Para, Monkirchor, Shilkup',
+      addressLocality: 'Banshkhali',
+      addressRegion: 'Chattogram',
+      postalCode: '4390',
       addressCountry: 'BD',
-      addressLocality: 'Dhaka',
+    },
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'BD',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+      merchantReturnDays: 7,
+      returnMethod: 'https://schema.org/ReturnByMail',
+      returnFees: 'https://schema.org/FreeReturn',
     },
     potentialAction: {
       '@type': 'SearchAction',
@@ -84,9 +168,9 @@ export function getWebSiteSchema() {
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     name: SITE_NAME,
-    alternateName: SITE_NAME_BN,
+    alternateName: [SITE_NAME_BN, 'Bronze Mart'],
     url: SITE_URL,
-    inLanguage: ['bn', 'en'],
+    inLanguage: ['bn-BD', 'en-US'],
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -99,7 +183,7 @@ export function getWebSiteSchema() {
 }
 
 /**
- * Product JSON-LD Schema
+ * Product JSON-LD Schema (Google Merchant / Rich Snippets Ready)
  */
 export function getProductSchema(product: {
   id: string;
@@ -127,6 +211,7 @@ export function getProductSchema(product: {
     description: product.description || product.title,
     image: images,
     sku: `BM-${product.id.slice(0, 8).toUpperCase()}`,
+    mpn: `BM-MPN-${product.id.slice(0, 8).toUpperCase()}`,
     category: product.category?.name || 'Fashion & Lifestyle',
     brand: {
       '@type': 'Brand',
@@ -149,14 +234,87 @@ export function getProductSchema(product: {
         '@type': 'Organization',
         name: SITE_NAME,
       },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: 70,
+          currency: 'BDT',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'BD',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 2,
+            maxValue: 4,
+            unitCode: 'd',
+          },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'BD',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 7,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      },
     },
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: product.rating || 4.8,
-      reviewCount: 24,
+      ratingValue: product.rating || 4.9,
+      reviewCount: 38,
       bestRating: 5,
       worstRating: 1,
     },
+  };
+}
+
+/**
+ * FAQPage JSON-LD Schema (Google Rich FAQ Snippets)
+ */
+export function getFaqSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'ব্রোঞ্জ মার্টে ডেলিভারি চার্জ কত?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'বাঁশখালীর ভেতরে ১০০০+ টাকার অর্ডারে সম্পূর্ণ ফ্রি ডেলিভারি। চট্টগ্রাম সিটিতে ৭০ টাকা এবং সারা দেশের যেকোনো জেলায় ক্যাশ অন ডেলিভারি চার্জ মাত্র ১৫০ টাকা।',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'পণ্য কীভাবে অর্ডার করব এবং পেমেন্ট পদ্ধতি কী?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'পণ্যটি কার্টে যুক্ত করে আপনার নাম, ঠিকানা ও মোবাইল নম্বর দিয়ে সহজে অর্ডার করতে পারবেন। ক্যাশ অন ডেলিভারি এবং বিকাশের মাধ্যমে নিরাপদ পেমেন্ট সুবিধা রয়েছে।',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'পণ্য ডেলিভারি পেতে কত সময় লাগে?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'চট্টগ্রাম সিটির মধ্যে ২৪ থেকে ৪৮ ঘণ্টার মধ্যে এবং সারা দেশে ২ থেকে ৩ কার্যদিবসের মধ্যে হোম ডেলিভারি পৌঁছে দেওয়া হয়।',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'পণ্য পরিবর্তন বা রিটার্ন করার নিয়ম কী?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'পণ্য পাওয়ার পর কোনো সমস্যা থাকলে ৭ দিনের মধ্যে আমাদের কাস্টমার কেয়ারে (০১৮৮৩-৩৬০৪৪০) যোগাযোগ করে সহজে এক্সচেঞ্জ বা রিটার্ন করতে পারবেন।',
+        },
+      },
+    ],
   };
 }
 

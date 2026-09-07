@@ -17,7 +17,18 @@ export const metadata: Metadata = {
     description:
       'ব্রোঞ্জ মার্টের গল্প, কোয়ালিটি, সেবা এবং ১০০% আসল পণ্যের প্রতিশ্রুতি সম্পর্কে বিস্তারিত জানুন।',
     url: '/about',
+    siteName: `${SITE_NAME} - ${SITE_NAME_BN}`,
+    locale: 'bn_BD',
+    alternateLocale: ['en_US'],
     type: 'website',
+    images: [{ url: '/logo.png', width: 1200, height: 630, alt: 'About Bronze Mart' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `আমাদের সম্পর্কে | ${SITE_NAME}`,
+    description:
+      'ব্রোঞ্জ মার্টের মূল লক্ষ্য হলো বাংলাদেশের প্রতিটি ঘরে আধুনিক ও রুচিশীল পোশাক ও আসল প্রসাধন সামগ্রী পৌঁছে দেওয়া।',
+    images: ['/logo.png'],
   },
 };
 

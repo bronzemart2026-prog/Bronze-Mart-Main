@@ -24,8 +24,8 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
   }
 
   return (
-    <section className="py-16 bg-stone-50 border-y border-stone-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-10 bg-stone-50 border-y border-stone-200">
+      <div className="max-w-[1500px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">

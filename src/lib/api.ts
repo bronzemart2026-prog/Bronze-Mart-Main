@@ -121,7 +121,13 @@ export async function createOrder(orderPayload: {
     country: string;
   };
   total_amount: number;
-  payment_method: 'cod' | 'card' | 'bkash' | 'stripe';
+  delivery_charge?: number;
+  is_delivery_paid?: boolean;
+  discount_amount?: number;
+  paid_amount?: number;
+  due_amount?: number;
+  payment_method: 'cod' | 'card' | 'bkash' | 'stripe' | 'nagad';
+  payment_status?: 'unpaid' | 'paid' | 'partially_paid' | 'refunded';
   notes?: string;
   items: {
     product_id: string;
@@ -135,6 +141,22 @@ export async function createOrder(orderPayload: {
     const supabase = createClient();
     const { data: userData } = await supabase.auth.getUser();
 
+    const discount = orderPayload.discount_amount || 0;
+    const paid = orderPayload.paid_amount || 0;
+    const deliveryCharge = orderPayload.delivery_charge || 0;
+    const isDeliveryPaid = !!orderPayload.is_delivery_paid;
+    const netTotal = Math.max(0, orderPayload.total_amount - discount);
+    const due = orderPayload.due_amount !== undefined ? orderPayload.due_amount : Math.max(0, netTotal - paid);
+
+    let paymentStatus: 'unpaid' | 'paid' | 'partially_paid' | 'refunded' =
+      orderPayload.payment_status || 'unpaid';
+
+    if (paid >= netTotal && netTotal > 0) {
+      paymentStatus = 'paid';
+    } else if (paid > 0 && paid < netTotal) {
+      paymentStatus = 'partially_paid';
+    }
+
     // 1. Insert order
     const { data: order, error: orderError } = await supabase
       .from('orders')
@@ -145,9 +167,14 @@ export async function createOrder(orderPayload: {
         customer_phone: orderPayload.customer_phone,
         shipping_address: orderPayload.shipping_address,
         total_amount: orderPayload.total_amount,
+        delivery_charge: deliveryCharge,
+        is_delivery_paid: isDeliveryPaid,
+        discount_amount: discount,
+        paid_amount: paid,
+        due_amount: due,
         payment_method: orderPayload.payment_method,
         status: 'pending',
-        payment_status: 'unpaid',
+        payment_status: paymentStatus,
         notes: orderPayload.notes,
       })
       .select('id')
@@ -201,6 +228,26 @@ export async function getOrders(): Promise<any[]> {
   }
 }
 
+export async function getOrderById(orderId: string): Promise<any | null> {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*, order_items(*)')
+      .eq('id', orderId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching order by id:', error.message || error);
+      return null;
+    }
+    return data || null;
+  } catch (err: any) {
+    console.error('Error fetching order by id:', err.message || err);
+    return null;
+  }
+}
+
 export async function updateOrderStatus(orderId: string, status: string): Promise<boolean> {
   try {
     const supabase = createClient();
@@ -217,6 +264,37 @@ export async function updateOrderStatus(orderId: string, status: string): Promis
   } catch (err) {
     console.error('Update status error:', err);
     return false;
+  }
+}
+
+export async function updateOrderAccounting(
+  orderId: string,
+  accountingData: {
+    status?: string;
+    delivery_charge?: number;
+    is_delivery_paid?: boolean;
+    discount_amount?: number;
+    paid_amount?: number;
+    due_amount?: number;
+    payment_status?: string;
+    notes?: string;
+  }
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from('orders')
+      .update(accountingData)
+      .eq('id', orderId);
+
+    if (error) {
+      console.error('Failed to update order accounting:', error.message || error);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    console.error('Update accounting error:', err.message || err);
+    return { success: false, error: err.message || 'Failed to update order accounting.' };
   }
 }
 

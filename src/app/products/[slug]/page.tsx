@@ -42,29 +42,37 @@ export async function generateMetadata({
       ? product.images
       : [DEFAULT_OG_IMAGE];
 
+  const keywords = [
+    product.title,
+    `${product.title} price in BD`,
+    `${product.title} কিনুন`,
+    product.category?.name || 'ফ্যাশন ও লাইফস্টাইল',
+    'Bronze Mart',
+    'ব্রোঞ্জ মার্ট',
+    'ক্যাশ অন ডেলিভারি',
+    'অনলাইন শপিং বাংলাদেশ',
+  ];
+
   return {
     title,
     description,
-    keywords: [
-      product.title,
-      product.category?.name || 'Fashion',
-      'Bronze Mart',
-      'ব্রোঞ্জ মার্ট',
-      'অনলাইন শপিং',
-    ],
+    keywords,
     alternates: {
       canonical,
     },
     openGraph: {
-      title: `${product.title} - ${SITE_NAME_BN}`,
+      title: `${product.title} | ${SITE_NAME_BN}`,
       description,
       url: canonical,
+      siteName: `${SITE_NAME} - ${SITE_NAME_BN}`,
+      locale: 'bn_BD',
+      alternateLocale: ['en_US'],
       type: 'website',
       images: imageUrls.map((url) => ({
         url,
         width: 800,
         height: 800,
-        alt: product.title,
+        alt: `${product.title} - Bronze Mart`,
       })),
     },
     twitter: {
@@ -72,12 +80,18 @@ export async function generateMetadata({
       title,
       description,
       images: imageUrls,
+      creator: '@BronzeMart',
     },
     other: {
       'product:price:amount': product.price.toString(),
       'product:price:currency': 'BDT',
-      'product:availability':
-        product.stock > 0 ? 'in stock' : 'out of stock',
+      'product:availability': product.stock > 0 ? 'in stock' : 'out of stock',
+      'product:brand': SITE_NAME,
+      'product:condition': 'new',
+      'product:retailer_item_id': `BM-${product.id.slice(0, 8).toUpperCase()}`,
+      'og:price:amount': product.price.toString(),
+      'og:price:currency': 'BDT',
+      'fb:app_id': '61589057942669',
     },
   };
 }
@@ -118,7 +132,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
       <JsonLd data={productSchema} />
       <JsonLd data={breadcrumbSchema} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1500px] mx-auto px-3 sm:px-5 lg:px-6">
         {/* Interactive Client View */}
         <ProductDetailsClient product={product} />
 

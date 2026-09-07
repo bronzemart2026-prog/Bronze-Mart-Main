@@ -4,41 +4,45 @@ import { Truck, Headphones, ShieldCheck, RefreshCw } from 'lucide-react';
 export default function StoreFeatures() {
   const features = [
     {
-      icon: <Truck className="w-6 h-6 text-[#8d4c2d]" />,
-      title: 'ফ্রি হোম ডেলিভারি (INSIDE BANSKHALI)',
-      desc: '১০০০ টাকার অধিক যেকোনো অর্ডারে বিনামূল্যে হোম ডেলিভারি।',
+      icon: <Truck className="w-5 h-5 text-[#8d4c2d]" />,
+      title: 'ফ্রি হোম ডেলিভারি',
+      desc: 'বাঁশখালীর ভেতরে ১০০০+ অর্ডারে',
     },
     {
-      icon: <ShieldCheck className="w-6 h-6 text-[#8d4c2d]" />,
+      icon: <ShieldCheck className="w-5 h-5 text-[#8d4c2d]" />,
       title: '১০০% নিরাপদ পেমেন্ট',
-      desc: 'ক্যাশ অন ডেলিভারি, বিকাশ ও কার্ডের মাধ্যমে নিরাপদ পেমেন্ট।',
+      desc: 'ক্যাশ অন ডেলিভারি ও বিকাশ',
     },
     {
-      icon: <RefreshCw className="w-6 h-6 text-[#8d4c2d]" />,
+      icon: <RefreshCw className="w-5 h-5 text-[#8d4c2d]" />,
       title: 'সহজ রিটার্ন সুবিধা',
-      desc: 'পছন্দ না হলে ৭ দিনের মধ্যে সহজে রিটার্ন বা এক্সচেঞ্জ করুন।',
+      desc: '৭ দিনের মধ্যে সহজ রিটার্ন',
     },
     {
-      icon: <Headphones className="w-6 h-6 text-[#8d4c2d]" />,
-      title: 'সার্বক্ষণিক কাস্টমার সাপোর্ট',
-      desc: 'যেকোনো জিজ্ঞাসা বা প্রয়োজনে আমাদের কাস্টমার কেয়ার পাশে আছে।',
+      icon: <Headphones className="w-5 h-5 text-[#8d4c2d]" />,
+      title: '২৪/৭ কাস্টমার সাপোর্ট',
+      desc: 'যেকোনো সময় সহায়তা পান',
     },
   ];
 
   return (
-    <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <section className="py-8 max-w-[1500px] mx-auto px-3 sm:px-5 lg:px-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {features.map((item, idx) => (
           <div
             key={idx}
-            className="p-6 rounded-2xl bg-white border border-stone-200 shadow-xs flex items-start gap-4"
+            className="p-3 sm:p-3.5 rounded-xl bg-white border border-stone-200/90 shadow-2xs flex items-center gap-3 hover:border-[#8d4c2d]/40 transition-colors"
           >
-            <div className="p-3 rounded-xl bg-stone-50 border border-stone-100 flex-shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-stone-50 border border-stone-100 flex items-center justify-center flex-shrink-0">
               {item.icon}
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-stone-900">{item.title}</h4>
-              <p className="text-xs text-stone-500 mt-1 leading-relaxed">{item.desc}</p>
+            <div className="min-w-0 flex-1">
+              <h4 className="text-xs sm:text-sm font-bold text-stone-900 truncate">
+                {item.title}
+              </h4>
+              <p className="text-[11px] text-stone-500 truncate mt-0.5">
+                {item.desc}
+              </p>
             </div>
           </div>
         ))}
@@ -46,3 +50,4 @@ export default function StoreFeatures() {
     </section>
   );
 }
+

@@ -80,3 +80,25 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #aa6335;
 }
+
+/* Dedicated Print Font & Layout Preservation */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html,
+  body,
+  #invoice-printable-area,
+  #invoice-printable-area * {
+    font-family: var(--font-hind-siliguri), "Hind Siliguri", "Noto Sans Bengali", -apple-system, sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #1a1512 !important;
+  }
+}

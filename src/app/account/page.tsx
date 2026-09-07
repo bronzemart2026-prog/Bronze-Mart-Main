@@ -10,13 +10,17 @@ import {
   LogOut,
   ArrowRight,
   Calendar,
+  Printer,
+  FileText,
 } from 'lucide-react';
+import InvoiceModal from '@/components/common/InvoiceModal';
 
 export default function AccountPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState<any | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
@@ -79,7 +83,7 @@ export default function AccountPage() {
 
           <button
             onClick={handleSignOut}
-            className="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-stone-600 hover:text-red-600 bg-white border border-stone-200 rounded-xl transition-colors shadow-xs"
+            className="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-stone-600 hover:text-red-600 bg-white border border-stone-200 rounded-xl transition-colors shadow-xs cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             <span>লগআউট করুন</span>
@@ -145,44 +149,86 @@ export default function AccountPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {orders.map((order) => (
-                    <div
-                      key={order.id}
-                      className="p-4 rounded-xl border border-stone-200 bg-stone-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                    >
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono font-bold text-xs text-stone-900">
-                            #{order.id.slice(0, 8).toUpperCase()}
-                          </span>
-                          <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-stone-200 text-stone-800">
-                            {order.status === 'pending' ? 'অপেক্ষমান' : order.status === 'delivered' ? 'ডেলিভারড' : order.status}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-4 text-xs text-stone-500">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5" />
-                            {new Date(order.created_at).toLocaleDateString('bn-BD')}
-                          </span>
-                          <span>•</span>
-                          <span>পেমেন্ট: {order.payment_method.toUpperCase()}</span>
-                        </div>
-                      </div>
+                  {orders.map((order) => {
+                    const discount = Number(order.discount_amount) || 0;
+                    const paid = Number(order.paid_amount) || 0;
+                    const due = Math.max(0, Number(order.total_amount) - discount - paid);
 
-                      <div className="text-right flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-stone-200">
-                        <span className="text-xs text-stone-500">মোট বিল</span>
-                        <span className="text-sm font-bold text-stone-900">
-                          ৳{Number(order.total_amount).toFixed(0)}
-                        </span>
+                    return (
+                      <div
+                        key={order.id}
+                        className="p-4 sm:p-5 rounded-2xl border border-stone-200 bg-stone-50/70 hover:bg-stone-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                      >
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-mono font-bold text-xs text-stone-900">
+                              #{order.id.slice(0, 8).toUpperCase()}
+                            </span>
+                            <span className="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-stone-200 text-stone-800">
+                              {order.status === 'pending'
+                                ? 'অপেক্ষমান'
+                                : order.status === 'delivered'
+                                ? 'ডেলিভারড'
+                                : order.status === 'shipped'
+                                ? 'শিপড'
+                                : order.status}
+                            </span>
+                            {due > 0 ? (
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                বকেয়া: ৳{due.toFixed(0)}
+                              </span>
+                            ) : (
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                পরিশোধিত
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3 text-xs text-stone-500 flex-wrap">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3.5 h-3.5" />
+                              {new Date(order.created_at).toLocaleDateString('bn-BD')}
+                            </span>
+                            <span>•</span>
+                            <span>পেমেন্ট: {order.payment_method?.toUpperCase()}</span>
+                            <span>•</span>
+                            <span>আইটেম: {order.order_items?.length || 1} টি</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-stone-200">
+                          <div className="text-left sm:text-right">
+                            <span className="block text-[11px] text-stone-500">মোট বিল</span>
+                            <span className="text-sm font-bold text-stone-900 font-mono">
+                              ৳{Number(order.total_amount).toFixed(0)}
+                            </span>
+                          </div>
+
+                          <button
+                            onClick={() => setSelectedInvoiceOrder(order)}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-stone-100 text-stone-800 border border-stone-300 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                          >
+                            <Printer className="w-3.5 h-3.5 text-[#8d4c2d]" />
+                            <span>ইনভয়েস PDF</span>
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Invoice Modal */}
+      {selectedInvoiceOrder && (
+        <InvoiceModal
+          order={selectedInvoiceOrder}
+          isOpen={!!selectedInvoiceOrder}
+          onClose={() => setSelectedInvoiceOrder(null)}
+        />
+      )}
     </div>
   );
 }

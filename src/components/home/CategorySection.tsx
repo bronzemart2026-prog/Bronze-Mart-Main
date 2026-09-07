@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Category } from '@/lib/types';
-import { ArrowUpRight, Shirt, Heart, Package, ShoppingBag, Watch, Home } from 'lucide-react';
+import { ArrowUpRight, Shirt, Heart, ShoppingBag, Watch, Home, Tag } from 'lucide-react';
 
 interface CategorySectionProps {
   categories: Category[];
@@ -10,18 +10,19 @@ interface CategorySectionProps {
 function getCategoryIcon(slug: string) {
   switch (slug) {
     case 'womens-clothing':
+      return <Shirt className="w-4 h-4" />;
     case 'mens-clothing':
-      return <Shirt className="w-5 h-5" />;
+      return <Shirt className="w-4 h-4" />;
     case 'cosmetics-skincare':
-      return <Heart className="w-5 h-5" />;
+      return <Heart className="w-4 h-4" />;
     case 'footwear-bags':
-      return <ShoppingBag className="w-5 h-5" />;
+      return <ShoppingBag className="w-4 h-4" />;
     case 'jewelry-accessories':
-      return <Watch className="w-5 h-5" />;
+      return <Watch className="w-4 h-4" />;
     case 'home-lifestyle':
-      return <Home className="w-5 h-5" />;
+      return <Home className="w-4 h-4" />;
     default:
-      return <Package className="w-5 h-5" />;
+      return <Tag className="w-4 h-4" />;
   }
 }
 
@@ -31,56 +32,47 @@ export default function CategorySection({ categories }: CategorySectionProps) {
   }
 
   return (
-    <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-        <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+    <section className="py-4 sm:py-5 max-w-7xl mx-auto px-4 sm:px-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3 gap-3">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-4 rounded-full bg-[#8d4c2d]" />
+          <h2 className="text-sm sm:text-base font-bold text-stone-900">
             ক্যাটাগরি সমূহ
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-            ক্যাটাগরি অনুযায়ী কেনাকাটা করুন
           </h2>
         </div>
         <Link
           href="/products"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8d4c2d] hover:text-[#743e2a] transition-colors"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-[#8d4c2d] hover:text-[#743e2a] transition-colors"
         >
-          <span>সব পণ্য দেখুন</span>
-          <ArrowUpRight className="w-4 h-4" />
+          <span>সকল পণ্য</span>
+          <ArrowUpRight className="w-3.5 h-3.5" />
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Category Pills / Cards - Full Text Visibility */}
+      <div className="flex flex-wrap items-center justify-start sm:justify-center gap-2 sm:gap-2.5">
         {categories.map((cat) => (
           <Link
             key={cat.id}
             href={`/products?category=${cat.slug}`}
-            className="group relative rounded-2xl bg-white border border-stone-200 p-6 shadow-xs hover:shadow-md hover:border-[#8d4c2d] transition-all flex flex-col justify-between"
+            className="group inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-stone-200/90 hover:border-[#8d4c2d] hover:bg-[#8d4c2d]/5 shadow-2xs hover:shadow-xs transition-all duration-200"
           >
-            <div className="space-y-3">
-              <div className="w-11 h-11 rounded-xl bg-stone-50 border border-stone-200 text-stone-700 group-hover:bg-[#8d4c2d] group-hover:text-white flex items-center justify-center transition-colors">
-                {getCategoryIcon(cat.slug)}
-              </div>
-
-              <div>
-                <h3 className="text-lg font-bold text-stone-900 group-hover:text-[#8d4c2d] transition-colors">
-                  {cat.name}
-                </h3>
-                {cat.description && (
-                  <p className="text-xs text-stone-500 mt-1 line-clamp-2 leading-relaxed">
-                    {cat.description}
-                  </p>
-                )}
-              </div>
+            {/* Real Ecommerce Icon */}
+            <div className="w-6 h-6 rounded-md bg-stone-100 text-[#8d4c2d] group-hover:bg-[#8d4c2d] group-hover:text-white flex items-center justify-center flex-shrink-0 transition-colors">
+              {getCategoryIcon(cat.slug)}
             </div>
 
-            <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between text-xs font-semibold text-[#8d4c2d]">
-              <span>কালেকশন দেখুন</span>
-              <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </div>
+            {/* Complete Full Category Name */}
+            <span className="text-xs sm:text-[13px] font-bold text-stone-800 group-hover:text-[#8d4c2d] transition-colors whitespace-nowrap">
+              {cat.name}
+            </span>
           </Link>
         ))}
       </div>
     </section>
   );
 }
+
+
+

@@ -11,6 +11,7 @@ import {
   SEO_KEYWORDS,
   getOrganizationSchema,
   getWebSiteSchema,
+  getFaqSchema,
 } from '@/lib/seo';
 
 const hindSiliguri = Hind_Siliguri({
@@ -91,6 +92,14 @@ export const metadata: Metadata = {
     },
   },
   category: 'ecommerce',
+  other: {
+    'fb:app_id': '61589057942669',
+    'rating': 'general',
+    'geo.region': 'BD-13',
+    'geo.placename': 'Banshkhali, Chattogram, Bangladesh',
+    'geo.position': '22.0333;91.9500',
+    'ICBM': '22.0333, 91.9500',
+  },
 };
 
 export default function RootLayout({
@@ -100,6 +109,7 @@ export default function RootLayout({
 }) {
   const organizationSchema = getOrganizationSchema();
   const webSiteSchema = getWebSiteSchema();
+  const faqSchema = getFaqSchema();
 
   return (
     <html
@@ -110,6 +120,7 @@ export default function RootLayout({
       <head>
         <JsonLd data={organizationSchema} />
         <JsonLd data={webSiteSchema} />
+        <JsonLd data={faqSchema} />
       </head>
       <body className="min-h-full flex flex-col bg-white text-stone-900">
         <StoreLayoutShell>{children}</StoreLayoutShell>

@@ -56,9 +56,14 @@ export interface Order {
     country: string;
   };
   total_amount: number;
+  delivery_charge?: number;
+  is_delivery_paid?: boolean;
+  discount_amount?: number;
+  paid_amount?: number;
+  due_amount?: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  payment_method: 'cod' | 'card' | 'bkash' | 'stripe';
-  payment_status: 'unpaid' | 'paid' | 'refunded';
+  payment_method: 'cod' | 'card' | 'bkash' | 'stripe' | 'nagad';
+  payment_status: 'unpaid' | 'paid' | 'partially_paid' | 'refunded';
   notes?: string;
   created_at: string;
   order_items?: OrderItem[];

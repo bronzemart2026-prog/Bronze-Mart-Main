@@ -52,12 +52,24 @@ CREATE TABLE IF NOT EXISTS public.orders (
     customer_phone TEXT,
     shipping_address JSONB NOT NULL,
     total_amount NUMERIC(10, 2) NOT NULL,
+    delivery_charge NUMERIC(10, 2) DEFAULT 0,
+    is_delivery_paid BOOLEAN DEFAULT FALSE,
+    discount_amount NUMERIC(10, 2) DEFAULT 0,
+    paid_amount NUMERIC(10, 2) DEFAULT 0,
+    due_amount NUMERIC(10, 2) DEFAULT 0,
     status TEXT NOT NULL DEFAULT 'pending', -- pending, processing, shipped, delivered, cancelled
     payment_method TEXT NOT NULL DEFAULT 'cod', -- cod, card, bkash, nagad
-    payment_status TEXT NOT NULL DEFAULT 'unpaid', -- unpaid, paid, refunded
+    payment_status TEXT NOT NULL DEFAULT 'unpaid', -- unpaid, paid, partially_paid, refunded
     notes TEXT,
     created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- কলাম মাইগ্রেশন (বিদ্যমান ডাটাবেজের জন্য)
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS delivery_charge NUMERIC(10, 2) DEFAULT 0;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS is_delivery_paid BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(10, 2) DEFAULT 0;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS paid_amount NUMERIC(10, 2) DEFAULT 0;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS due_amount NUMERIC(10, 2) DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS public.order_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -178,7 +190,6 @@ $$;
 -- ৭. প্রাথমিক সুরক্ষিত অ্যাডমিন ইউজার সিড (bronze-admin / 123456)
 SELECT public.manage_admin_user('bronze-admin', '01883360440', '123456', 'super_admin');
 
-
 -- ৮. ক্যাটাগরি সিড ডাটা (বাংলা)
 INSERT INTO public.categories (id, name, slug, description) VALUES
 ('10000000-0000-0000-0000-000000000001', 'মেয়েদের ফ্যাশন ও পোশাক', 'womens-clothing', 'আধুনিক কুর্তি, সালোয়ার কামিজ, টপস, শাড়ি এবং প্রিমিয়াম কালেকশন।'),
@@ -210,5 +221,3 @@ FOR UPDATE USING (bucket_id = 'product-images');
 DROP POLICY IF EXISTS "Public Delete product-images" ON storage.objects;
 CREATE POLICY "Public Delete product-images" ON storage.objects 
 FOR DELETE USING (bucket_id = 'product-images');
-
-

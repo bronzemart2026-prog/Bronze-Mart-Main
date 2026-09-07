@@ -99,10 +99,14 @@ export default function CartDrawer() {
                   {/* Thumbnail */}
                   <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200">
                     <Image
-                      src={item.product.images[0] || ''}
+                      src={
+                        item.product.images?.[0] ||
+                        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&auto=format&fit=crop&q=80'
+                      }
                       alt={item.product.title}
                       fill
-                      className="object-cover"
+                      className="object-cover object-center"
+                      unoptimized
                     />
                   </div>
 
@@ -183,7 +187,9 @@ export default function CartDrawer() {
                 </div>
                 <div className="flex justify-between text-stone-600">
                   <span>ডেলিভারি চার্জ</span>
-                  <span>{shipping === 0 ? <strong className="text-emerald-700">ফ্রি</strong> : `৳${shipping.toFixed(0)}`}</span>
+                  <span className="text-[11px] font-semibold text-stone-700">
+                    চট্টগ্রাম ৳৭০ / বাইরে ৳১৫০
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm font-bold text-stone-900 pt-2 border-t border-stone-100">
                   <span>সর্বমোট (Total)</span>
