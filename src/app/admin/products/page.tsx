@@ -16,6 +16,7 @@ import {
   AlertCircle,
   X,
   Layers,
+  FileText,
 } from 'lucide-react';
 import {
   getProducts,
@@ -26,6 +27,7 @@ import {
   uploadProductImage,
 } from '@/lib/api';
 import { Product, Category } from '@/lib/types';
+import PostGeneratorModal from '@/components/admin/PostGeneratorModal';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -40,6 +42,10 @@ export default function AdminProductsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  // Social Media Post Generator State
+  const [postGenProduct, setPostGenProduct] = useState<Product | null>(null);
+  const [isPostGenOpen, setIsPostGenOpen] = useState(false);
 
   // Form fields
   const [formTitle, setFormTitle] = useState('');
@@ -385,29 +391,42 @@ export default function AdminProductsPage() {
                         </div>
                       </td>
 
-                      <td className="py-4 px-5 align-middle text-right space-x-1">
-                        <Link
-                          href={`/products/${p.slug}`}
-                          target="_blank"
-                          title="স্টোরফ্রন্টে দেখুন"
-                          className="inline-flex p-2 text-stone-500 hover:text-[#8d4c2d] hover:bg-stone-100 rounded-lg transition-colors"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Link>
-                        <button
-                          onClick={() => openEditModal(p)}
-                          title="এডিট করুন"
-                          className="inline-flex p-2 text-stone-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(p.id, p.title)}
-                          title="মুছে ফেলুন"
-                          className="inline-flex p-2 text-stone-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                      <td className="py-4 px-5 align-middle text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => {
+                              setPostGenProduct(p);
+                              setIsPostGenOpen(true);
+                            }}
+                            title="সোশ্যাল মিডিয়া পোস্ট ক্যাপশন ও হোয়াটসঅ্যাপ শেয়ার"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-[#8d4c2d]/10 hover:bg-[#8d4c2d] text-[#8d4c2d] hover:text-white border border-[#ce9764]/40 hover:border-[#8d4c2d] rounded-lg text-xs font-bold transition-all duration-150 shadow-2xs hover:shadow-xs cursor-pointer group"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-[#8d4c2d] group-hover:text-white transition-colors" />
+                            <span className="hidden xl:inline">পোস্ট ক্যাপশন</span>
+                          </button>
+                          <Link
+                            href={`/products/${p.slug}`}
+                            target="_blank"
+                            title="স্টোরফ্রন্টে দেখুন"
+                            className="inline-flex p-2 text-stone-500 hover:text-[#8d4c2d] hover:bg-stone-100 rounded-lg transition-colors"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Link>
+                          <button
+                            onClick={() => openEditModal(p)}
+                            title="এডিট করুন"
+                            className="inline-flex p-2 text-stone-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(p.id, p.title)}
+                            title="মুছে ফেলুন"
+                            className="inline-flex p-2 text-stone-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -669,6 +688,16 @@ export default function AdminProductsPage() {
           </div>
         </div>
       )}
+
+      {/* Social Media Post Generator Modal */}
+      <PostGeneratorModal
+        product={postGenProduct}
+        isOpen={isPostGenOpen}
+        onClose={() => {
+          setIsPostGenOpen(false);
+          setPostGenProduct(null);
+        }}
+      />
     </div>
   );
 }
