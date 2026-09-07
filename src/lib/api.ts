@@ -77,7 +77,17 @@ export async function getProducts(options?: {
 
     let products = (data as Product[]) || [];
     if (options?.categorySlug) {
-      products = products.filter((p) => p.category?.slug === options.categorySlug);
+      let decodedCatSlug = options.categorySlug;
+      try {
+        decodedCatSlug = decodeURIComponent(options.categorySlug);
+      } catch {
+        decodedCatSlug = options.categorySlug;
+      }
+      products = products.filter(
+        (p) =>
+          p.category?.slug === decodedCatSlug ||
+          p.category?.slug === options.categorySlug
+      );
     }
 
     return products;
@@ -89,12 +99,36 @@ export async function getProducts(options?: {
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
+    if (!slug) return null;
     const supabase = createClient();
-    const { data, error } = await supabase
+    
+    let decodedSlug = slug;
+    try {
+      decodedSlug = decodeURIComponent(slug);
+    } catch {
+      decodedSlug = slug;
+    }
+
+    // 1. Try fetching by decoded slug (e.g. Bangla Unicode text)
+    let { data, error } = await supabase
       .from('products')
       .select('*, category:categories(*)')
-      .eq('slug', slug)
+      .eq('slug', decodedSlug)
       .single();
+
+    // 2. If not found and decoded is different from raw slug, try raw encoded slug as fallback
+    if ((error || !data) && decodedSlug !== slug) {
+      const retry = await supabase
+        .from('products')
+        .select('*, category:categories(*)')
+        .eq('slug', slug)
+        .single();
+
+      if (!retry.error && retry.data) {
+        data = retry.data;
+        error = null;
+      }
+    }
 
     if (error) {
       if (error.code !== 'PGRST116') { // 0 rows found

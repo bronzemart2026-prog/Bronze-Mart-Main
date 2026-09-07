@@ -25,7 +25,18 @@ export async function generateMetadata({
 }: ProductsPageProps): Promise<Metadata> {
   const params = await searchParams;
   const categories = await getCategories();
-  const selectedCategory = categories.find((c) => c.slug === params.category);
+  const rawCat = params.category;
+  let decodedCat = rawCat;
+  if (rawCat) {
+    try {
+      decodedCat = decodeURIComponent(rawCat);
+    } catch {
+      decodedCat = rawCat;
+    }
+  }
+  const selectedCategory = categories.find(
+    (c) => c.slug === decodedCat || c.slug === rawCat
+  );
 
   if (params.search) {
     return {
@@ -110,12 +121,23 @@ export async function generateMetadata({
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams;
   const categories = await getCategories();
+  const rawCat = params.category;
+  let decodedCat = rawCat;
+  if (rawCat) {
+    try {
+      decodedCat = decodeURIComponent(rawCat);
+    } catch {
+      decodedCat = rawCat;
+    }
+  }
   
-  const selectedCategory = categories.find((c) => c.slug === params.category);
+  const selectedCategory = categories.find(
+    (c) => c.slug === decodedCat || c.slug === rawCat
+  );
   
   const products = await getProducts({
     categoryId: selectedCategory?.id,
-    categorySlug: params.category,
+    categorySlug: decodedCat || rawCat,
     search: params.search,
     sort: params.sort,
   });

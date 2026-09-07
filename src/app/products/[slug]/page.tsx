@@ -24,7 +24,13 @@ export async function generateMetadata({
   params,
 }: ProductDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug);
+  } catch {
+    decodedSlug = slug;
+  }
+  const product = (await getProductBySlug(decodedSlug)) || (await getProductBySlug(slug));
 
   if (!product) {
     return {
@@ -103,7 +109,13 @@ export async function generateMetadata({
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug);
+  } catch {
+    decodedSlug = slug;
+  }
+  const product = (await getProductBySlug(decodedSlug)) || (await getProductBySlug(slug));
 
   if (!product) {
     notFound();
